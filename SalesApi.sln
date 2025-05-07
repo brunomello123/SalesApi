@@ -9,18 +9,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{41F8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SalesApi", "SalesApi", "{BF5D4791-CBE7-4320-A966-9534C12AF6C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi", "SalesApi\SalesApi.csproj", "{D54319F7-6255-46AF-B974-3EB9C8936E8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApi", "SalesApi\SalesApi.csproj", "{D54319F7-6255-46AF-B974-3EB9C8936E8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi.Application", "SalesApi.Application\SalesApi.Application.csproj", "{C3B362FA-C4C8-4311-9012-BAE727BC4B9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApi.Application", "SalesApi.Application\SalesApi.Application.csproj", "{C3B362FA-C4C8-4311-9012-BAE727BC4B9F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0745F7CF-06EF-4640-8D4A-A98B8E9B856E} = {0745F7CF-06EF-4640-8D4A-A98B8E9B856E}
+		{D316BDCD-925A-40EE-8BBB-EF361FF46D85} = {D316BDCD-925A-40EE-8BBB-EF361FF46D85}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi.Application.Contracts", "SalesApi.Application.Contracts\SalesApi.Application.Contracts.csproj", "{0745F7CF-06EF-4640-8D4A-A98B8E9B856E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApi.Application.Contracts", "SalesApi.Application.Contracts\SalesApi.Application.Contracts.csproj", "{0745F7CF-06EF-4640-8D4A-A98B8E9B856E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi.Domain", "SalesApi.Domain\SalesApi.Domain.csproj", "{D316BDCD-925A-40EE-8BBB-EF361FF46D85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApi.Domain", "SalesApi.Domain\SalesApi.Domain.csproj", "{D316BDCD-925A-40EE-8BBB-EF361FF46D85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesApi.Infrastructure", "SalesApi.Infrastructure\SalesApi.Infrastructure.csproj", "{D6CAB37B-0B83-424D-BD95-7D09857CB83B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalesApi.Infrastructure", "SalesApi.Infrastructure\SalesApi.Infrastructure.csproj", "{D6CAB37B-0B83-424D-BD95-7D09857CB83B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{FFEA326F-CB63-4FD3-85E7-FA46F4F95B59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +51,10 @@ Global
 		{D6CAB37B-0B83-424D-BD95-7D09857CB83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6CAB37B-0B83-424D-BD95-7D09857CB83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6CAB37B-0B83-424D-BD95-7D09857CB83B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFEA326F-CB63-4FD3-85E7-FA46F4F95B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFEA326F-CB63-4FD3-85E7-FA46F4F95B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFEA326F-CB63-4FD3-85E7-FA46F4F95B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEA326F-CB63-4FD3-85E7-FA46F4F95B59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +67,7 @@ Global
 		{0745F7CF-06EF-4640-8D4A-A98B8E9B856E} = {BF5D4791-CBE7-4320-A966-9534C12AF6C3}
 		{D316BDCD-925A-40EE-8BBB-EF361FF46D85} = {BF5D4791-CBE7-4320-A966-9534C12AF6C3}
 		{D6CAB37B-0B83-424D-BD95-7D09857CB83B} = {BF5D4791-CBE7-4320-A966-9534C12AF6C3}
+		{FFEA326F-CB63-4FD3-85E7-FA46F4F95B59} = {41F8C29E-1944-4C6B-8D0D-9ADD914EA5AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {897BA011-60F7-4874-BBAE-0959F49FC56B}
