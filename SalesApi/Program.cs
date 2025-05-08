@@ -4,9 +4,13 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using SalesApi.Application;
 using SalesApi.Application.Contracts.Products;
+using SalesApi.Application.Contracts.Sales;
 using SalesApi.Application.Products;
+using SalesApi.Application.Sales;
 using SalesApi.Domain.Products;
+using SalesApi.Domain.Sales;
 using SalesApi.Infrastructure.Products;
+using SalesApi.Infrastructure.Sales;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,10 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductDomainService, ProductDomainService>();
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
+
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<ISaleDomainService, SaleDomainService>();
+builder.Services.AddScoped<ISaleAppService, SaleAppService>();
 
 builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
     new MongoClient(builder.Configuration.GetValue<string>("MongoDB:ConnectionString")));

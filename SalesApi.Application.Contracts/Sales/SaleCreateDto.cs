@@ -8,6 +8,6 @@
         public decimal TotalSaleAmount { get; set; }
         public string Branch { get; set; }
         public bool IsCancelled { get; set; }
-        public IEnumerable<SaleProductDto> Products { get; set; }
+        public List<SaleProductDto> Products { get; set; }
     }
 }
