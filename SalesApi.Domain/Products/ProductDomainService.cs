@@ -4,19 +4,19 @@ public class ProductDomainService: IProductDomainService
 {
     public async Task<Product> CreateAsync(
         Guid id,
-        string productName,
-        int quantity,
-        decimal unitPrice,
-        decimal taxApplied,
-        decimal totalAmount)
+        string title,
+        string description,
+        string category,
+        string image,
+        decimal price)
     {
         var product = new Product(
             id: id,
-            productName: productName,
-            quantity: quantity,
-            unitPrice: unitPrice,
-            taxApplied: taxApplied,
-            totalAmount: totalAmount
+            title: title,
+            description: description,
+            category: category,
+            image: image,
+            price: price
         );
 
         await Task.CompletedTask;

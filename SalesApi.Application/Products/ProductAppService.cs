@@ -15,11 +15,11 @@ namespace SalesApi.Application.Products
         {
             var product = await productDomainService.CreateAsync(
                 id: Guid.NewGuid(),
-                productName: input.ProductName,
-                quantity: input.Quantity,
-                unitPrice: input.UnitPrice,
-                taxApplied: input.TaxApplied,
-                totalAmount: input.TotalAmount
+                title: input.Title,
+                description: input.Description,
+                category: input.Category,
+                image: input.Image,
+                price: input.Price
             );
 
             await productRepository.InsertAsync(product);
@@ -34,11 +34,16 @@ namespace SalesApi.Application.Products
             return objectMapper.Map<Product, ProductDto>(product);
         }
         
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
+        public async Task<ProductListDto> GetAllAsync()
         {
             var products = await productRepository.GetAllAsync();
             
-            return objectMapper.Map<List<Product>, List<ProductDto>>(products);
+            var productsDto = objectMapper.Map<List<Product>, List<ProductDto>>(products);
+
+            return new ProductListDto
+            {
+                Data = productsDto
+            };
         }
         
         public async Task DeleteAsync(Guid id)

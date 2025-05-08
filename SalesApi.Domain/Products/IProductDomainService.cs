@@ -4,10 +4,10 @@ public interface IProductDomainService
 {
     Task<Product> CreateAsync(
         Guid id,
-        string productName,
-        int quantity,
-        decimal unitPrice,
-        decimal taxApplied,
-        decimal totalAmount
-        );
+        string title,
+        string description,
+        string category,
+        string image,
+        decimal price
+    );
 }

@@ -6,7 +6,7 @@
 
         Task<ProductDto> GetAsync(Guid id);
 
-        Task<IEnumerable<ProductDto>> GetAllAsync();
+        Task<ProductListDto> GetAllAsync();
 
         Task DeleteAsync(Guid id);
     }

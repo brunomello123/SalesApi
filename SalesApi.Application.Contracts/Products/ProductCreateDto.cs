@@ -2,9 +2,9 @@ namespace SalesApi.Application.Contracts.Products;
 
 public record ProductCreateDto
 {
-    public required string ProductName { get; set; }
-    public int Quantity { get; set; }
-    public decimal UnitPrice { get; set; }
-    public decimal TaxApplied { get; set; }
-    public decimal TotalAmount { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public string Category { get; set; }
+    public string Image { get; set; }
+    public decimal Price { get; set; }
 }
