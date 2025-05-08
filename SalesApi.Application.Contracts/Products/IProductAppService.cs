@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SalesApi.Application.Contracts.Products
+﻿namespace SalesApi.Application.Contracts.Products
 {
     public interface IProductAppService
     {
@@ -12,6 +6,8 @@ namespace SalesApi.Application.Contracts.Products
 
         Task<ProductDto> GetAsync(Guid id);
 
-        Task<IEnumerable<ProductDto>> GetListAsync();
+        Task<IEnumerable<ProductDto>> GetAllAsync();
+
+        Task DeleteAsync(Guid id);
     }
 }

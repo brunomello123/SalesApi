@@ -5,11 +5,12 @@ services:
     image: ocelot-gateway
     build:
       context: .
-      dockerfile: src/Gateway/Dockerfile
+      dockerfile: Gateway/Dockerfile
     container_name: ocelot-gateway
     ports:
       - "0.0.0.0:7777:7777"
     environment:
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:7777
     depends_on:
       - sales-api
@@ -20,31 +21,35 @@ services:
     image: sales-api
     build:
       context: .
-      dockerfile: src/SalesApi/Dockerfile
+      dockerfile: SalesApi/Dockerfile
     container_name: sales-api
     depends_on:
-      - db
+      - mongo
     ports:
       - "8090:8090"
     environment:
-      - ConnectionStrings__SalesApiDb=Host=db;Database=SalesApiDb;Username=postgres;Password=admin
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__SalesApiDb=mongodb://mongo:27017/SalesApiDb
     networks:
       - evaluation-network
     tty: true
 
-  db:
-    image: postgres:latest
-    container_name: db
+  mongo:
+    image: mongo:4.4
+    container_name: mongo
     environment:
-      POSTGRES_DB: SalesApiDb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      MONGO_INITDB_DATABASE: SalesApiDb
     ports:
-      - "5432:5432"
+      - "27017:27017"
     networks:
       - evaluation-network
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+    driver: local
 
 networks:
   evaluation-network:
     external: true
-  

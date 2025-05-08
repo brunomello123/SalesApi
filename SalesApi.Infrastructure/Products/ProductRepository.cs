@@ -1,44 +1,14 @@
-using Microsoft.EntityFrameworkCore;
-using SalesApi.Domain.Exceptions;
+using MongoDB.Driver;
 using SalesApi.Domain.Products;
 
 namespace SalesApi.Infrastructure.Products;
 
-public class ProductRepository(AppDbContext context) : IProductRepository
+public class ProductRepository(IMongoDatabase database) : IProductRepository
 {
-    public async Task<Product> InsertAsync(Product product)
-    {
-        var entityEntry = await context.Products.AddAsync(product);
+    private readonly IMongoCollection<Product> _products = database.GetCollection<Product>("products");
 
-        await SaveChangesAsync();
-        
-        return entityEntry.Entity;
-    }
-
-    public async Task<Product> GetAsync(Guid id)
-    {
-        var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
-        
-        if(product is null)
-            throw new EntityNotFoundException(nameof(Product), id);
-
-        return product;
-    }
-
-    public async Task<List<Product>> GetAllAsync()
-    {
-        return await context.Products.ToListAsync();
-    }
-
-    public async Task DeleteAsync(Product product)
-    {
-        context.Products.Remove(product);
-        
-        await SaveChangesAsync();
-    }
-
-    private async Task SaveChangesAsync()
-    {
-        await context.SaveChangesAsync();
-    }
+    public async Task InsertAsync(Product product) => await _products.InsertOneAsync(product);
+    public async Task<Product> GetAsync(Guid id) => await _products.Find(p => p.Id == id).FirstOrDefaultAsync();
+    public async Task<List<Product>> GetAllAsync() => await _products.Find(_ => true).ToListAsync();
+    public async Task DeleteAsync(Product product) => await _products.DeleteOneAsync(p => p.Id == product.Id);
 }

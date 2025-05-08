@@ -2,7 +2,7 @@ using SalesApi.Domain.Abstractions;
 
 namespace SalesApi.Domain.Products;
 
-public class Product : AuditedEntity
+public class Product : BasicEntity
 {
     public string ProductName { get; private set; }
     public int Quantity { get; private set; }

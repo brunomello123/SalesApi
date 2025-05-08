@@ -1,27 +1,26 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
+# Base image for running the application
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 7777
 
-# This stage is used to build the service project
+# Build image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["Directory.Packages.props", "."]
-COPY ["src/Gateway/Gateway.csproj", "src/Gateway/"]
-RUN dotnet restore "./src/Gateway/Gateway.csproj"
-COPY . .
-WORKDIR "/src/src/Gateway"
-RUN dotnet build "./Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR /app
 
-# This stage is used to publish the service project to be copied to the final stage
+COPY ["Gateway/Gateway.csproj", "Gateway/"]
+RUN dotnet restore "Gateway/Gateway.csproj"
+
+COPY . .
+WORKDIR "/app/Gateway"
+RUN dotnet build "Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Publish image
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Gateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# Final runtime image
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
