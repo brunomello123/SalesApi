@@ -2,7 +2,7 @@ namespace SalesApi.Domain.Products;
 
 public class ProductDomainService: IProductDomainService
 {
-    public async Task<Product> CreateAsync(
+    public static Product Create(
         Guid id,
         string title,
         string description,
@@ -10,7 +10,7 @@ public class ProductDomainService: IProductDomainService
         string image,
         decimal price)
     {
-        var product = new Product(
+        return new Product(
             id: id,
             title: title,
             description: description,
@@ -18,9 +18,5 @@ public class ProductDomainService: IProductDomainService
             image: image,
             price: price
         );
-
-        await Task.CompletedTask;
-
-        return product;
     }
 }

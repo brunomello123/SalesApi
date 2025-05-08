@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using SalesApi.Application.Contracts.Products;
 using SalesApi.Domain.Exceptions;
 using SalesApi.Domain.Products;
@@ -6,14 +7,13 @@ using SalesApi.Domain.Products;
 namespace SalesApi.Application.Products
 {
     public class ProductAppService(
-        IProductDomainService productDomainService,
         IProductRepository productRepository,
         IMapper objectMapper)
         : IProductAppService
     {
         public async Task<ProductDto> CreateAsync(ProductCreateDto input)
         {
-            var product = await productDomainService.CreateAsync(
+            var product = ProductDomainService.Create(
                 id: Guid.NewGuid(),
                 title: input.Title,
                 description: input.Description,
@@ -34,16 +34,11 @@ namespace SalesApi.Application.Products
             return objectMapper.Map<Product, ProductDto>(product);
         }
         
-        public async Task<ProductListDto> GetAllAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await productRepository.GetAllAsync();
             
-            var productsDto = objectMapper.Map<List<Product>, List<ProductDto>>(products);
-
-            return new ProductListDto
-            {
-                Data = productsDto
-            };
+            return objectMapper.Map<List<Product>, List<ProductDto>>(products);
         }
         
         public async Task DeleteAsync(Guid id)
@@ -51,8 +46,8 @@ namespace SalesApi.Application.Products
             var product = await productRepository.GetAsync(id);
             
             if(product is null)
-                throw new EntityNotFoundException(nameof(Product));
-
+                throw new BusinessException("Entity not found", HttpStatusCode.NotFound);
+            
             await productRepository.DeleteAsync(product);
         }
     }

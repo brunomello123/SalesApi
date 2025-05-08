@@ -1,30 +1,26 @@
+using SalesApi.Domain.Taxes;
+
 namespace SalesApi.Domain.Sales;
 
 public class SaleDomainService: ISaleDomainService
 {
-    public async Task<Sale> CreateAsync(
+    public static Sale Create(
         Guid saleId,
         string saleNumber,
         DateTime saleDate,
-        string customer,
-        decimal totalSaleAmount,
-        string branch,
+        Guid customerId,
+        Guid branchId,
         bool isCancelled,
-        IEnumerable<SaleProduct> products)
+        List<SaleProduct> products)
     {
-        var sale = new Sale(
+        return new Sale(
             id: saleId,
             saleNumber: saleNumber,
             saleDate: saleDate,
-            customer: customer,
-            totalSaleAmount: totalSaleAmount,
-            branch: branch,
+            customerId: customerId,
+            branchId: branchId,
             isCancelled: isCancelled,
             products: products
         );
-
-        await Task.CompletedTask;
-
-        return sale;
     }
 }

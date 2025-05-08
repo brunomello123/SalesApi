@@ -15,34 +15,43 @@ public class SalesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<SaleDto>> CreateAsync(SaleCreateDto input)
+    public async Task<ActionResult<ApiResponse<SaleDto>>> CreateAsync(SaleCreateDto input)
     {
-        var product = await _saleAppService.CreateAsync(input);
+        var sale = await _saleAppService.CreateAsync(input);
         
-        return Ok(product);
+        var response = new ApiResponse<SaleDto>(sale);
+
+        return Ok(response);
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<SaleDto>> GetAsync(Guid id)
+    public async Task<ActionResult<ApiResponse<SaleDto>>> GetAsync(Guid id)
     {
-        var product = await _saleAppService.GetAsync(id);
+        var sale = await _saleAppService.GetAsync(id);
         
-        return Ok(product);
+        var response = new ApiResponse<SaleDto>(sale);
+        
+        return Ok(response);
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<SaleDto>>> GetAllAsync()
+    public async Task<ActionResult<ApiResponse<IEnumerable<SaleDto>>>> GetAllAsync()
     {
-        var products = await _saleAppService.GetAllAsync();
+        var sales = await _saleAppService.GetAllAsync();
         
-        return Ok(products);
+        var response = new ApiResponse<IEnumerable<SaleDto>>(sales);
+
+        return Ok(response);
     }
     
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<IEnumerable<SaleDto>>> DeleteAsync(Guid id)
+    public async Task<ActionResult<ApiResponse<object>>> DeleteAsync(Guid id)
     {
         await _saleAppService.DeleteAsync(id);
         
-        return Ok();
+        return Ok(new ApiResponse<object>(null!)
+        {
+            Message = "Sell Cancelled"
+        });
     }
 }

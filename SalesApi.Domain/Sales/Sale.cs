@@ -6,9 +6,8 @@ public class Sale : BasicEntity
 {
     public string SaleNumber { get; private set; }
     public DateTime SaleDate { get; private set; }
-    public string Customer { get; private set; }
-    public decimal TotalSaleAmount { get; private set; }
-    public string Branch { get; private set; }
+    public Guid CustomerId { get; private set; }
+    public Guid BranchId { get; private set; }
     public bool IsCancelled { get; private set; }
     public IReadOnlyCollection<SaleProduct> Products { get; private set; }
 
@@ -16,19 +15,27 @@ public class Sale : BasicEntity
         Guid id,
         string saleNumber,
         DateTime saleDate,
-        string customer,
-        decimal totalSaleAmount,
-        string branch,
+        Guid customerId,
+        Guid branchId,
         bool isCancelled,
         IEnumerable<SaleProduct> products)
         :base(id)
     {
         SaleNumber = saleNumber ?? throw new ArgumentNullException(nameof(saleNumber));
         SaleDate = saleDate;
-        Customer = customer ?? throw new ArgumentNullException(nameof(customer));
-        TotalSaleAmount = totalSaleAmount;
-        Branch = branch ?? throw new ArgumentNullException(nameof(branch));
+        CustomerId = customerId;
+        BranchId = branchId;
         IsCancelled = isCancelled;
         Products = products.ToList().AsReadOnly() ?? throw new ArgumentNullException(nameof(products));
+    }
+
+    public void Cancel()
+    {
+        IsCancelled = true;
+
+        foreach (var product in Products)
+        {
+            product.Cancel();
+        }
     }
 }

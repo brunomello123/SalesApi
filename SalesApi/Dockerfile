@@ -42,4 +42,4 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:8090
 
 # Definir o ponto de entrada do contêiner
-ENTRYPOINT ["bash", "-c", "dotnet ef database update && dotnet SalesApi.dll"]
+ENTRYPOINT ["dotnet", "SalesApi.dll"]

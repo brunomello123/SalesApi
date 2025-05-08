@@ -10,5 +10,11 @@ public class ProductRepository(IMongoDatabase database) : IProductRepository
     public async Task InsertAsync(Product product) => await _products.InsertOneAsync(product);
     public async Task<Product> GetAsync(Guid id) => await _products.Find(p => p.Id == id).FirstOrDefaultAsync();
     public async Task<List<Product>> GetAllAsync() => await _products.Find(_ => true).ToListAsync();
+    
+    public async Task<List<Product>> GetByIdsAsync(IEnumerable<Guid> ids)
+    {
+        var filter = Builders<Product>.Filter.In(sale => sale.Id, ids);
+        return await _products.Find(filter).ToListAsync();
+    }
     public async Task DeleteAsync(Product product) => await _products.DeleteOneAsync(p => p.Id == product.Id);
 }

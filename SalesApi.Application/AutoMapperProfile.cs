@@ -11,6 +11,9 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         CreateMap<Product, ProductDto>();
-        CreateMap<Sale, SaleDto>();
+        CreateMap<Sale, SaleDto>()
+            .ForMember(dest => dest.TotalAmount,
+                opt => opt.MapFrom(src => src.Products.Sum(p => p.Total)));
+        CreateMap<SaleProduct, SaleProductDto>();
     }
 }

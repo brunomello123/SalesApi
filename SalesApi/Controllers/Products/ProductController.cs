@@ -5,43 +5,42 @@ namespace SalesApi.Controllers.Products;
 
 [Route("api/products")]
 [ApiController]
-public class ProductController : ControllerBase
+public class ProductController(IProductAppService productAppService) : ControllerBase
 {
-    private readonly IProductAppService _productAppService;
-
-    public ProductController(IProductAppService productAppService)
-    {
-        _productAppService = productAppService;
-    }
-    
     [HttpPost]
-    public async Task<ActionResult<ProductDto>> CreateAsync(ProductCreateDto input)
+    public async Task<ActionResult<ApiResponse<ProductDto>>> CreateAsync(ProductCreateDto input)
     {
-        var product = await _productAppService.CreateAsync(input);
+        var product = await productAppService.CreateAsync(input);
         
-        return Ok(product);
+        var response = new ApiResponse<ProductDto>(product);
+
+        return Ok(response);
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ProductDto>> GetAsync(Guid id)
+    public async Task<ActionResult<ApiResponse<ProductDto>>> GetAsync(Guid id)
     {
-        var product = await _productAppService.GetAsync(id);
+        var product = await productAppService.GetAsync(id);
         
-        return Ok(product);
+        var response = new ApiResponse<ProductDto>(product);
+
+        return Ok(response);
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllAsync()
+    public async Task<ActionResult<ApiResponse<IEnumerable<ProductDto>>>> GetAllAsync()
     {
-        var products = await _productAppService.GetAllAsync();
+        var products = await productAppService.GetAllAsync();
         
-        return Ok(products);
+        var response = new ApiResponse<IEnumerable<ProductDto>>(products);
+        
+        return Ok(response);
     }
     
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> DeleteAsync(Guid id)
+    public async Task<ActionResult> DeleteAsync(Guid id)
     {
-        await _productAppService.DeleteAsync(id);
+        await productAppService.DeleteAsync(id);
         
         return Ok();
     }
