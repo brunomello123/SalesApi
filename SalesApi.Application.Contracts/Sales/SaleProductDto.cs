@@ -1,7 +1,4 @@
-﻿
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace SalesApi.Application.Contracts.Sales;
+﻿namespace SalesApi.Application.Contracts.Sales;
 
 public record SaleProductDto
 {
