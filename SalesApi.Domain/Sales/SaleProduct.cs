@@ -1,7 +1,6 @@
 using System.Net;
 using SalesApi.Domain.Discounts;
 using SalesApi.Domain.Exceptions;
-using SalesApi.Domain.Taxes;
 
 namespace SalesApi.Domain.Sales;
 
@@ -12,12 +11,7 @@ public class SaleProduct
     public Guid SaleId { get; private set; }
     public int Quantity { get; private set; }
     public decimal UnitPrice { get; private set; }
-    
-    [Obsolete("ValueMonetaryTaxApplied is obsolete: the business rule now uses Discount instead of MonetaryTax. Use the Discount property or method for calculations.")]
-    public decimal ValueMonetaryTaxApplied { get; }
-    
     public decimal Discount { get; }
-
     public decimal Total { get; }
     public bool IsCancelled { get; private set; }
 
@@ -35,7 +29,6 @@ public class SaleProduct
         Quantity = quantity;
         UnitPrice = unitPrice;
         ValidateMaximumQuantity();
-        ValueMonetaryTaxApplied = CalculateMonetaryTaxApplied();
         Discount = CalculateDiscountApplied();
         Total = CalculateTotal();
     }
@@ -53,15 +46,6 @@ public class SaleProduct
     }
     
     private decimal CalculateTotal() => Quantity * UnitPrice - Discount;
-    private decimal CalculateMonetaryTaxApplied()
-    {
-        var taxTier = GetTaxTier();
-        
-        var taxRate = TaxTierRatesHelper.GetRate(taxTier);
-        
-        var total = Quantity * UnitPrice;
-        return total * taxRate;
-    }
     
     private decimal CalculateDiscountApplied()
     {
@@ -74,17 +58,6 @@ public class SaleProduct
         return total * discountRate;
     }
 
-    private TaxTier GetTaxTier()
-    {
-        return Quantity switch
-        {
-            < 4 => TaxTier.None,
-            < 10 => TaxTier.Iva,
-            < 21 => TaxTier.SpecialIva,
-            _ => throw new InvalidOperationException()
-        };
-    }
-    
     private DiscountTier GetDiscountTier()
     {
         return Quantity switch

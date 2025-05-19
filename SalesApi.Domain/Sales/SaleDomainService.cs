@@ -1,5 +1,3 @@
-using SalesApi.Domain.Taxes;
-
 namespace SalesApi.Domain.Sales;
 
 public class SaleDomainService: ISaleDomainService
