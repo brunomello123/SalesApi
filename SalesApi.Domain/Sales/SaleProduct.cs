@@ -1,4 +1,5 @@
 using System.Net;
+using SalesApi.Domain.Discounts;
 using SalesApi.Domain.Exceptions;
 using SalesApi.Domain.Taxes;
 
@@ -11,7 +12,12 @@ public class SaleProduct
     public Guid SaleId { get; private set; }
     public int Quantity { get; private set; }
     public decimal UnitPrice { get; private set; }
+    
+    [Obsolete("ValueMonetaryTaxApplied is obsolete: the business rule now uses Discount instead of MonetaryTax. Use the Discount property or method for calculations.")]
     public decimal ValueMonetaryTaxApplied { get; }
+    
+    public decimal Discount { get; }
+
     public decimal Total { get; }
     public bool IsCancelled { get; private set; }
 
@@ -30,6 +36,7 @@ public class SaleProduct
         UnitPrice = unitPrice;
         ValidateMaximumQuantity();
         ValueMonetaryTaxApplied = CalculateMonetaryTaxApplied();
+        Discount = CalculateDiscountApplied();
         Total = CalculateTotal();
     }
     
@@ -41,11 +48,11 @@ public class SaleProduct
             throw new BusinessException(
                 "Invalid Sell",
                 HttpStatusCode.BadRequest,
-                "You cannot buy more than 20 pices of same item"
+                "You cannot buy more than 20 pieces of same item"
             );
     }
     
-    private decimal CalculateTotal() => Quantity * UnitPrice - ValueMonetaryTaxApplied;
+    private decimal CalculateTotal() => Quantity * UnitPrice - Discount;
     private decimal CalculateMonetaryTaxApplied()
     {
         var taxTier = GetTaxTier();
@@ -55,6 +62,17 @@ public class SaleProduct
         var total = Quantity * UnitPrice;
         return total * taxRate;
     }
+    
+    private decimal CalculateDiscountApplied()
+    {
+        var discountTier = GetDiscountTier();
+        
+        var discountRate = DiscountTierHelper.GetRate(discountTier);
+        
+        var total = Quantity * UnitPrice;
+        
+        return total * discountRate;
+    }
 
     private TaxTier GetTaxTier()
     {
@@ -63,6 +81,17 @@ public class SaleProduct
             < 4 => TaxTier.None,
             < 10 => TaxTier.Iva,
             < 21 => TaxTier.SpecialIva,
+            _ => throw new InvalidOperationException()
+        };
+    }
+    
+    private DiscountTier GetDiscountTier()
+    {
+        return Quantity switch
+        {
+            < 4 => DiscountTier.None,
+            < 10 => DiscountTier.Tier1,
+            < 21 => DiscountTier.Tier2,
             _ => throw new InvalidOperationException()
         };
     }
